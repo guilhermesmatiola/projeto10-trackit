@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/trackitlogo.png" 
+import { ThreeDots } from  'react-loader-spinner'
 
 export default function SignUp() {
 
@@ -11,6 +12,7 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [password, setPassword] = useState("");
+  const [registerData, setRegisterData] = useState(null);
 
   function submitData(event) {
     event.preventDefault();
@@ -36,10 +38,9 @@ export default function SignUp() {
 
   return (
     <>
-        
       <Container>
         <img src={logo}/>
-        <Form>
+        <Form onSubmit={submitData}>
             <input type="text" placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
             <input type="text" placeholder="nome" onChange={(e) => setName(e.target.value)} value={name} />
             <input type="text" placeholder="foto" onChange={(e) => setImage(e.target.value)} value={image}/>
@@ -90,16 +91,19 @@ const Form = styled.form`
         height: 45px;
         margin-right: 36px;
         margin-left: 36px;
-        min-width: 303px;
+        min-width: 150px;
         margin-bottom: 6px;
         border-radius: 5px;
         border: 1px solid #D4D4D4; 
         padding-left:11px ;
+        box-sizing: border-box;
+
     }
     input::placeholder {
         color: grey;
         font-size: 20px;
         font-style: italic;
+        box-sizing: border-box;
     }
     button {
         min-width: 303px;
@@ -118,5 +122,6 @@ const Form = styled.form`
         a{
             text-decoration: none;
         }
+        
     }
 `

@@ -1,24 +1,48 @@
 import React from "react";
 import styled from 'styled-components';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from 'react';
 import logo from '../assets/images/trackitlogo.png'
+import UserContext from "../context/UserContext";
 
 export default function LoginScreen(){
-
+    
     const [email, setEmail]=useState("");
     const [password,setPassword]=useState("");
 
+    const navigate = useNavigate();
+
+    const { user, setUser } = useContext(UserContext);
+
     function Login(event){
-
         event.preventDefault();
-        const info={
-            email:email,
-            password:password
-        }
-    }
 
+        const postLogin={
+            email,
+            password
+        }
+
+        const promise=axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",postLogin);
+
+        promise.then(resposta => {
+            setEmail("");
+            setPassword("");
+            
+            console.log(resposta.data);
+            setUser(
+                {
+                    id: resposta.data.id,
+                    name: resposta.data.name,
+                    image: resposta.data.image,
+                    email: resposta.data.email,
+                    token: resposta.data.token
+                },
+            );
+            navigate("/habitos");
+        });
+    }
+    
     return(
 
         <Container>
@@ -77,11 +101,13 @@ const Form = styled.form`
         border-radius: 5px;
         border: 1px solid #D4D4D4; 
         padding-left:11px ;
+        box-sizing: border-box;
     }
     input::placeholder {
         color: grey;
         font-size: 20px;
         font-style: italic;
+        box-sizing: border-box;
     }
     button {
         min-width: 303px;
@@ -100,5 +126,6 @@ const Form = styled.form`
         a{
             text-decoration: none;
         }
+        
     }
 `
