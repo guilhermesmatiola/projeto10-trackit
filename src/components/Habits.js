@@ -8,6 +8,8 @@ import Header from "./Header";
 import Habit from "./Habit";
 import Footer from "./Footer";
 import NewHabit from "./Newhabit";
+import { ThreeDots } from "react-loader-spinner";
+
 
 export default function HabitsPage(){
     const { user } = useContext(UserContext);
@@ -16,7 +18,8 @@ export default function HabitsPage(){
     const [habits,setHabits]=useState([]);
     //const navigate = useNavigate();
     // navigate("/");
-
+    const [hasHabit, sethasHabit] = useState(true);
+    
     useEffect(() => {
         const config = {
             headers: {
@@ -28,7 +31,8 @@ export default function HabitsPage(){
 
         promise.then(resposta => {
             console.log(resposta.data);
-            setHabits(resposta.data);
+            setHabits(...habits,resposta.data);
+            sethasHabit(false);
         });
 
     }, []);
@@ -39,11 +43,16 @@ export default function HabitsPage(){
         <Page>
         <Container> <h1>Meus hábitos</h1> <Add>+</Add> </Container>
         <NewHabit/>
-        <Column>
-            {habits.map((habit) => (
-                <Habit habit={habit} token={token} key={habit.id}/>
-            ))}
-        </Column>
+        {hasHabit ? 
+        (
+            <EmptyText> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! </EmptyText>
+        ):(
+            <Column>
+                {habits.map((habit) => (
+                    <Habit habit={habit} token={token} key={habit.id}/>
+                ))}
+            </Column>
+        )}
         </Page>
         <Footer/>
         </>
@@ -59,6 +68,15 @@ const Column=styled.div`
     height: calc(100vh - 140px);
     background: #E5E5E5;
     margin: 20px;
+`
+const EmptyText=styled.div`
+    width: 88%;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #666666;
 `
 
 const Page=styled.div`

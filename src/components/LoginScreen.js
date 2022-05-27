@@ -5,11 +5,13 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from 'react';
 import logo from '../assets/images/trackitlogo.png'
 import UserContext from "../context/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginScreen(){
     
     const [email, setEmail]=useState("");
     const [password,setPassword]=useState("");
+    const [isLoading, setIsLoading]=useState("");
 
     const navigate = useNavigate();
 
@@ -17,7 +19,7 @@ export default function LoginScreen(){
 
     function Login(event){
         event.preventDefault();
-
+        setIsLoading(true);
         const postLogin={
             email,
             password
@@ -40,15 +42,25 @@ export default function LoginScreen(){
         });
     }
     
+           
+
     return(
 
         <Container>
             <img src={logo} alt="logo"/>
-            <Form onSubmit={Login}>
+            {isLoading?(
+                <Form background={"#f2f2f2"} color={"#afafaf"}>
+                    <input disabled opacity={0.7} type="email" id="email" value={email} placeholder="email" required onChange={(e)=>setEmail(e.target.value)} />
+                    <input disabled opacity={0.7} type="password" id="password" value={password} placeholder="senha" required onChange={(e)=>setPassword(e.target.value)} />
+                    <button disabled opacity={0.7} type="submit" >{<ThreeDots color={"#ffffff"} width={51}/>}</button>
+                </Form>
+            ):(
+                <Form onSubmit={Login}>
                 <input type="email" id="email" value={email} placeholder="email" required onChange={(e)=>setEmail(e.target.value)} />
                 <input type="password" id="password" value={password} placeholder="senha" required onChange={(e)=>setPassword(e.target.value)} />
                 <button type="submit" >Entrar</button>
             </Form>
+            )}
             <Link to='/cadastro'>Não tem uma conta? Cadastre-se</Link>
         </Container>
 

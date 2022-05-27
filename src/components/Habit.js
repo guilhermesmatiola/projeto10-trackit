@@ -40,7 +40,6 @@ export default function Habit({habit,token}){
         promise.then(resposta => {
             console.log(resposta.data);
         });
-        //RECARREGAR HABITOS
     }
 
     return(
@@ -73,13 +72,19 @@ const DayBox=styled.div`
     background: ${props => props.backgrounds};
     border: 1px solid #CFCFCF;
     border-radius: 5px;
-    margin:5px;
+    margin: 2.5px;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
     color: ${props => props.colors};
+`
+const ContainerDays=styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
 `
 const Row=styled.div`
     width: 100%;
