@@ -1,3 +1,4 @@
+
 import React from "react";
 import styled from 'styled-components';
 import Header from "./Header";
@@ -23,6 +24,7 @@ const EmptyText=styled.div`
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
+    margin-top: 15px;
     color: #666666;
 `
 const Page=styled.div`
@@ -30,7 +32,6 @@ const Page=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
     width: 100%;
     height: calc(100vh - 140px);
     background: #E5E5E5;
@@ -39,7 +40,7 @@ const Page=styled.div`
 const Container=styled.div`
     display: flex;
     align-items: center;
-    width: 95%;
+    width: 88%;
     margin-top: 20px;
     font-family: 'Lexend Deca', sans-serif;
     h1{

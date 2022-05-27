@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {React, useContext, useState } from 'react';
 import UserContext from "../context/UserContext";
 
-export default function NewHabit(){
+export default function NewHabit({setAdd}){
 
     const { user } = useContext(UserContext);
     const {image,token} = user;
@@ -71,7 +71,7 @@ export default function NewHabit(){
         <Container>
             <input type="text" id="name" value={habit} placeholder="Nome do hábito" required onChange={(e)=>setHabit(e.target.value)} />
             
-            <Row>
+            <ContainerDays>
                 <DayBox colors={colors[0]} backgrounds={backgrounds[0]}  onClick={() => selectDay(0)}>D</DayBox>
                 <DayBox colors={colors[1]} backgrounds={backgrounds[1]}  onClick={() => selectDay(1)}>S</DayBox>
                 <DayBox colors={colors[2]} backgrounds={backgrounds[2]}  onClick={() => selectDay(2)}>T</DayBox>
@@ -79,17 +79,21 @@ export default function NewHabit(){
                 <DayBox colors={colors[4]} backgrounds={backgrounds[4]}  onClick={() => selectDay(4)}>Q</DayBox>
                 <DayBox colors={colors[5]} backgrounds={backgrounds[5]}  onClick={() => selectDay(5)}>S</DayBox>
                 <DayBox colors={colors[6]} backgrounds={backgrounds[6]}  onClick={() => selectDay(6)}>S</DayBox>
-            </Row>
-
+            </ContainerDays>
             <Row>
+                <Cancel  onClick={() => setAdd(false)}>Cancelar</Cancel>
                 <button onClick={submitData}>Salvar</button>
-                <button onClick={submitData}>Cancelar</button> 
             </Row>
             
         </Container>
     )
 }
-
+const ContainerDays=styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+`
 const DayBox=styled.div`
     cursor: pointer;
     box-sizing: border-box;
@@ -102,6 +106,7 @@ const DayBox=styled.div`
     border: 1px solid #CFCFCF;
     border-radius: 5px;
     margin:5px;
+    margin-top:15px;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
@@ -133,11 +138,25 @@ const Row=styled.div`
         }
     }
 `
+const Cancel=styled.div`
+    margin-left: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    text-align: center;
+    color: #52B6FF;
+`
 const Container=styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 90%;
+    width: 88%;
+    height: 180px;;
     margin-top: 68px;
     background-color: #ffffff;
     border-radius: 5px;
@@ -145,6 +164,7 @@ const Container=styled.div`
     margin:10px;
     padding: 10px;
     input{
+        margin-top: 10px;
         padding-left:10px;
         width: 303px;
         height: 45px;

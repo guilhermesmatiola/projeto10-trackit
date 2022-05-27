@@ -41,8 +41,6 @@ export default function LoginScreen(){
             navigate("/habitos");
         });
     }
-    
-           
 
     return(
 

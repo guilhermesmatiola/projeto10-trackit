@@ -10,7 +10,6 @@ export default function Footer(){
 
     const { user } = useContext(UserContext);
 
-    console.log(user)
     const percentage=20;
 
     return(

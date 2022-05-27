@@ -13,7 +13,7 @@ export default function Habit({habit,token}){
 
             let newbackgrounds=[...backgrounds];
             let newcolors=[...colors];
-            for(let i=0;i<7;i++){
+            for(let i=0;i<=6;i++){
                 for(let j=0;j<days.length;j++){
                     if(i===days[j]){
                         newcolors[i]="#ffffff";
@@ -40,6 +40,7 @@ export default function Habit({habit,token}){
         promise.then(resposta => {
             console.log(resposta.data);
         });
+        //RECARREGAR HABITOS
     }
 
     return(
@@ -48,7 +49,7 @@ export default function Habit({habit,token}){
                 <h1>{habit.name} </h1>
                 <img onClick={() =>deleteHabit(`${habit.id}`)} src={trash} alt="trash"></img>
             </Row>
-            <Row>
+            <ContainerDays>
                 <DayBox colors={colors[0]} backgrounds={backgrounds[0]}>D</DayBox>
                 <DayBox colors={colors[1]} backgrounds={backgrounds[1]}>S</DayBox>
                 <DayBox colors={colors[2]} backgrounds={backgrounds[2]}>T</DayBox>
@@ -56,7 +57,7 @@ export default function Habit({habit,token}){
                 <DayBox colors={colors[4]} backgrounds={backgrounds[4]}>Q</DayBox>
                 <DayBox colors={colors[5]} backgrounds={backgrounds[5]}>S</DayBox>
                 <DayBox colors={colors[6]} backgrounds={backgrounds[6]}>S</DayBox>
-            </Row>
+            </ContainerDays>
         </Container>
     )
 }
@@ -84,7 +85,7 @@ const ContainerDays=styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 20px;
 `
 const Row=styled.div`
     width: 100%;
@@ -136,5 +137,5 @@ const Container=styled.div`
     border-radius: 5px;
     padding: 5px;
     justify-content: center;
-    
+    margin-bottom: 15px;
 `

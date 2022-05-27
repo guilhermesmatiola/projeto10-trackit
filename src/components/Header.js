@@ -30,7 +30,6 @@ const Container=styled.div`
         font-weight: 400;
         font-size: 38.982px;
         line-height: 49px;
-
         color: #FFFFFF;
     }
     img{

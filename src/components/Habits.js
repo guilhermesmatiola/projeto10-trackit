@@ -1,15 +1,12 @@
 import React from "react";
 import styled from 'styled-components';
 import axios from 'axios';
-//import { Link, useNavigate } from "react-router-dom";
 import { useEffect,useContext , useState } from 'react';
 import UserContext from "../context/UserContext";
 import Header from "./Header";
 import Habit from "./Habit";
 import Footer from "./Footer";
-import NewHabit from "./Newhabit";
-import { ThreeDots } from "react-loader-spinner";
-
+import Newhabit from "./Newhabit";
 
 export default function HabitsPage(){
     const { user } = useContext(UserContext);
@@ -19,7 +16,7 @@ export default function HabitsPage(){
     //const navigate = useNavigate();
     // navigate("/");
     const [hasHabit, sethasHabit] = useState(true);
-    
+    const [add, setAdd] = useState(false);
     useEffect(() => {
         const config = {
             headers: {
@@ -41,8 +38,8 @@ export default function HabitsPage(){
         <>
         <Header/>
         <Page>
-        <Container> <h1>Meus hábitos</h1> <Add>+</Add> </Container>
-        <NewHabit/>
+        <Container> <h1>Meus hábitos</h1> <Add onClick={() => setAdd(!add)}>+</Add> </Container>
+        {add ? (<Newhabit setAdd={setAdd}/>):(<></>)}
         {hasHabit ? 
         (
             <EmptyText> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! </EmptyText>
@@ -59,16 +56,6 @@ export default function HabitsPage(){
     )
 }
 
-const Column=styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100vh - 140px);
-    background: #E5E5E5;
-    margin: 20px;
-`
 const EmptyText=styled.div`
     width: 88%;
     font-family: 'Lexend Deca';
@@ -77,6 +64,17 @@ const EmptyText=styled.div`
     font-size: 17.976px;
     line-height: 22px;
     color: #666666;
+    margin-top: 28px;
+`
+const Column=styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 140px);
+    background: #E5E5E5;
+    margin: 20px;
+    margin-bottom: 35px;
 `
 
 const Page=styled.div`
@@ -84,7 +82,7 @@ const Page=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    //justify-content: space-between;
     width: 100%;
     height: calc(100vh - 140px);
     background: #E5E5E5;
