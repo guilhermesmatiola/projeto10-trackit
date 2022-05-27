@@ -7,9 +7,8 @@ import UserContext from "../context/UserContext";
 import Header from "./Header";
 import Habit from "./Habit";
 import Footer from "./Footer";
-import NewHabit from "./Newhabit";
 
-export default function HabitsPage(){
+export default function History(){
     const { user } = useContext(UserContext);
    
     const {image,token} = user;
@@ -37,40 +36,20 @@ export default function HabitsPage(){
         <>
         <Header/>
         <Page>
-        <Container> <h1>Meus hábitos</h1> <Add>+</Add> </Container>
-        <NewHabit/>
-        <Column>
-            {habits.map((habit) => (
-                <Habit habit={habit} token={token} key={habit.id}/>
-            ))}
-        </Column>
+        <Container> <h1>Historico</h1> <Add>+</Add> </Container>
         </Page>
         <Footer/>
         </>
     )
 }
-
-const Column=styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100vh - 140px);
-    background: #E5E5E5;
-    margin: 20px;
-`
-
 const Page=styled.div`
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: calc(100vh - 140px);
+    height: 100%;
     background: #E5E5E5;
-    //margin-top: 70px;
 `
 const Container=styled.div`
     display: flex;

@@ -12,7 +12,6 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [password, setPassword] = useState("");
-  const [registerData, setRegisterData] = useState(null);
 
   function submitData(event) {
     event.preventDefault();

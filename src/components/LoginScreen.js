@@ -32,10 +32,7 @@ export default function LoginScreen(){
             console.log(resposta.data);
             setUser(
                 {
-                    id: resposta.data.id,
-                    name: resposta.data.name,
                     image: resposta.data.image,
-                    email: resposta.data.email,
                     token: resposta.data.token
                 },
             );
