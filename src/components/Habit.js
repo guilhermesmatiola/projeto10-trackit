@@ -135,7 +135,7 @@ const Container=styled.div`
     align-items: center;
     flex-direction: column;
     width: 340px;
-    height: 91px;
+    min-height: 91px;
     background: #FFFFFF;
     border-radius: 5px;
     padding: 5px;

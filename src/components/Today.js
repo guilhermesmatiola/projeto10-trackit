@@ -61,7 +61,7 @@ export default function Today(){
             return "Nenhum hábito concluído ainda";
         }else{
             txtcolor="#8FC549";
-            return `${nDone/habits.length*100}% dos hábitos concluídos`;
+            return `${(nDone/habits.length*100).toFixed(0)}% dos hábitos concluídos`;
         }
     }
 
