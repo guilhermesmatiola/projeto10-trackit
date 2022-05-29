@@ -38,7 +38,7 @@ export default function LoginScreen(){
                     token: resposta.data.token
                 },
             );
-            navigate("/habitos");
+            navigate("/hoje");
         });
     }
     
