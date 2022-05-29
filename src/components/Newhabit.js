@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import {React, useContext, useState } from 'react';
 import UserContext from "../context/UserContext";
-import { ThreeDots } from "react-loader-spinner";
+import { ThreeDots } from  'react-loader-spinner';
 
 export default function NewHabit({setAdd,loadHabits}){
 
@@ -12,13 +12,14 @@ export default function NewHabit({setAdd,loadHabits}){
     const [habit, setHabit]=useState("");
     const [days,setDays]=useState([false,false,false,false,false,false,false]);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     function submitData(event) {
 
         event.preventDefault();
-
+        setIsLoading(true);
         let postdays=[];
-        for(let i=0;i<=6;i++){
+        for(let i=0;i<7;i++){
             if(days[i]){
                 postdays.push(i);
                 console.log("postdays "+ postdays);
@@ -41,7 +42,8 @@ export default function NewHabit({setAdd,loadHabits}){
         promise.then(resposta => {
             setHabit("");
             console.log(resposta.data);
-            //close newhabit tab
+            setIsLoading(false);
+            setAdd(false);
             loadHabits();
             navigate("/habitos");
         });
@@ -69,10 +71,29 @@ export default function NewHabit({setAdd,loadHabits}){
         setDays(newdays);
     }
 
-    const [enable, setEnable] = useState(true);
-
     return(
-        <Container>
+        <>
+        {isLoading ? (
+        <Container background={"#f2f2f2"} color={"#afafaf"}>
+            <input disabled  type="text" id="name" value={habit} placeholder="Nome do hábito" required onChange={(e)=>setHabit(e.target.value)} />
+            
+            <ContainerDays>
+                <DayBox colors={colors[0]} backgrounds={backgrounds[0]}  onClick={() => selectDay(0)}>D</DayBox>
+                <DayBox colors={colors[1]} backgrounds={backgrounds[1]}  onClick={() => selectDay(1)}>S</DayBox>
+                <DayBox colors={colors[2]} backgrounds={backgrounds[2]}  onClick={() => selectDay(2)}>T</DayBox>
+                <DayBox colors={colors[3]} backgrounds={backgrounds[3]}  onClick={() => selectDay(3)}>Q</DayBox>
+                <DayBox colors={colors[4]} backgrounds={backgrounds[4]}  onClick={() => selectDay(4)}>Q</DayBox>
+                <DayBox colors={colors[5]} backgrounds={backgrounds[5]}  onClick={() => selectDay(5)}>S</DayBox>
+                <DayBox colors={colors[6]} backgrounds={backgrounds[6]}  onClick={() => selectDay(6)}>S</DayBox>
+            </ContainerDays>
+            <Row>
+                <Cancel onClick={() =>{ setAdd(false);navigate("/habitos")}}>Cancelar</Cancel>
+                <button onClick={submitData} disabled opacity={0.7}>{<ThreeDots color={"#ffffff"} width={51} />}</button>
+            </Row>
+            
+        </Container>
+        ) :(
+        <Container background={"#ffffff"} color={"#666666"}>
             <input type="text" id="name" value={habit} placeholder="Nome do hábito" required onChange={(e)=>setHabit(e.target.value)} />
             
             <ContainerDays>
@@ -86,39 +107,13 @@ export default function NewHabit({setAdd,loadHabits}){
             </ContainerDays>
             <Row>
                 <Cancel onClick={() =>{ setAdd(false);navigate("/habitos")}}>Cancelar</Cancel>
-                {enable ? <button onClick={submitData}>Salvar</button> : <button> <ThreeDots width={303} height={15} color={"#FFFFFF"} /></button>}
+                <button onClick={submitData}>Salvar</button>
             </Row>
             
-        </Container>
+        </Container>)}
+        </>
     )
 }
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-right: 36px;
-    margin-left: 36px;
-    button {
-        cursor: pointer;
-        margin:10px;
-        min-width: 100px;
-        height: 45px;
-        margin-right: 36px;
-        margin-left: 36px;
-        text-align: center;
-        background-color: #52B6FF;
-        color: #FFFFFF;
-        font-size: 21px;
-        border: none;
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        a{
-            text-decoration: none;
-        }
-    }
-`
 const ContainerDays=styled.div`
     width: 100%;
     display: flex;
@@ -181,7 +176,6 @@ const Cancel=styled.div`
     line-height: 20px;
     text-align: center;
     color: #52B6FF;
-    cursor:pointer;
 `
 const Container=styled.div`
     display: flex;
@@ -200,7 +194,6 @@ const Container=styled.div`
         padding-left:10px;
         width: 303px;
         height: 45px;
-        background: #FFFFFF;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         font-family: 'Lexend Deca';
@@ -208,7 +201,8 @@ const Container=styled.div`
         font-weight: 400;
         font-size: 19.976px;
         line-height: 25px;
-        color: #666666;
+        color: ${props => props.color};
+        background-color: ${props => props.background};
     }
     input::placeholder{
         color: #DBDBDB;
