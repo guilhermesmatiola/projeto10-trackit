@@ -11,7 +11,7 @@ export default function LoginScreen(){
     
     const [email, setEmail]=useState("");
     const [password,setPassword]=useState("");
-    const [isLoading, setIsLoading]=useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export default function LoginScreen(){
         promise.then(resposta => {
             setEmail("");
             setPassword("");
-            
+            setIsLoading(false);
             console.log(resposta.data);
             setUser(
                 {
@@ -41,27 +41,25 @@ export default function LoginScreen(){
             navigate("/habitos");
         });
     }
-
+    
     return(
-
         <Container>
             <img src={logo} alt="logo"/>
-            {isLoading?(
+            {isLoading ? (
                 <Form background={"#f2f2f2"} color={"#afafaf"}>
-                    <input disabled opacity={0.7} type="email" id="email" value={email} placeholder="email" required onChange={(e)=>setEmail(e.target.value)} />
-                    <input disabled opacity={0.7} type="password" id="password" value={password} placeholder="senha" required onChange={(e)=>setPassword(e.target.value)} />
-                    <button disabled opacity={0.7} type="submit" >{<ThreeDots color={"#ffffff"} width={51}/>}</button>
+                    <input disabled type="email" id="email" value={email} placeholder="E-mail" required onChange={(e)=>setEmail(e.target.value)} />
+                    <input disabled type="password" id="password" value={password} placeholder="Senha" required onChange={(e)=>setPassword(e.target.value)} />
+                    <button type="submit" disabled opacity={0.7}>{<ThreeDots color={"#ffffff"} width={51} />}</button>
                 </Form>
-            ):(
-                <Form onSubmit={Login}>
-                <input type="email" id="email" value={email} placeholder="email" required onChange={(e)=>setEmail(e.target.value)} />
-                <input type="password" id="password" value={password} placeholder="senha" required onChange={(e)=>setPassword(e.target.value)} />
-                <button type="submit" >Entrar</button>
-            </Form>
+                 ) : ( 
+                <Form background={"#ffffff"} color={"#666666"} onSubmit={Login}>
+                    <input type="email" id="email" value={email} placeholder="E-mail" required onChange={(e)=>setEmail(e.target.value)} />
+                    <input type="password" id="password" value={password} placeholder="Senha" required onChange={(e)=>setPassword(e.target.value)} />
+                    <button type="submit" >Entrar</button>
+                </Form>
             )}
             <Link to='/cadastro'>Não tem uma conta? Cadastre-se</Link>
         </Container>
-
     )
 }
 
@@ -133,6 +131,5 @@ const Form = styled.form`
         a{
             text-decoration: none;
         }
-        
     }
 `

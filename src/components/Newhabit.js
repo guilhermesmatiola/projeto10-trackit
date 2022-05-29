@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {React, useContext, useState } from 'react';
 import UserContext from "../context/UserContext";
 
-export default function NewHabit({setAdd}){
+export default function NewHabit({setAdd,loadHabits}){
 
     const { user } = useContext(UserContext);
     const {image,token} = user;
@@ -17,7 +17,7 @@ export default function NewHabit({setAdd}){
         event.preventDefault();
 
         let postdays=[];
-        for(let i=0;i<7;i++){
+        for(let i=0;i<=6;i++){
             if(days[i]){
                 postdays.push(i);
                 console.log("postdays "+ postdays);
@@ -41,6 +41,7 @@ export default function NewHabit({setAdd}){
             setHabit("");
             console.log(resposta.data);
             //close newhabit tab
+            loadHabits();
             navigate("/habitos");
         });
     }
@@ -81,7 +82,7 @@ export default function NewHabit({setAdd}){
                 <DayBox colors={colors[6]} backgrounds={backgrounds[6]}  onClick={() => selectDay(6)}>S</DayBox>
             </ContainerDays>
             <Row>
-                <Cancel  onClick={() => setAdd(false)}>Cancelar</Cancel>
+                <Cancel onClick={() =>{ setAdd(false);navigate("/habitos")}}>Cancelar</Cancel>
                 <button onClick={submitData}>Salvar</button>
             </Row>
             

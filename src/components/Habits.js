@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect,useContext , useState } from 'react';
 import UserContext from "../context/UserContext";
 import Header from "./Header";
@@ -10,43 +11,47 @@ import Newhabit from "./Newhabit";
 
 export default function HabitsPage(){
     const { user } = useContext(UserContext);
-   
+    
     const {image,token} = user;
     const [habits,setHabits]=useState([]);
-    //const navigate = useNavigate();
-    // navigate("/");
+    
     const [hasHabit, sethasHabit] = useState(true);
     const [add, setAdd] = useState(false);
-    useEffect(() => {
-        const config = {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        };
 
+    useEffect(() => {
+       
+        loadHabits();
+
+    }, []);
+
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+    };
+
+    function loadHabits(){
         const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`,config);
 
         promise.then(resposta => {
-            console.log(resposta.data);
-            setHabits(...habits,resposta.data);
+            setHabits(resposta.data);
             sethasHabit(false);
         });
+    }
 
-    }, []);
-   
     return(
         <>
         <Header/>
         <Page>
         <Container> <h1>Meus hábitos</h1> <Add onClick={() => setAdd(!add)}>+</Add> </Container>
-        {add ? (<Newhabit setAdd={setAdd}/>):(<></>)}
+        {add ? (<Newhabit setAdd={setAdd} loadHabits={loadHabits} />):(<></>)}
         {hasHabit ? 
         (
             <EmptyText> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! </EmptyText>
         ):(
             <Column>
                 {habits.map((habit) => (
-                    <Habit habit={habit} token={token} key={habit.id}/>
+                    <Habit habit={habit} loadHabits={loadHabits} token={token} key={habit.id}/>
                 ))}
             </Column>
         )}
@@ -64,7 +69,6 @@ const EmptyText=styled.div`
     font-size: 17.976px;
     line-height: 22px;
     color: #666666;
-    margin-top: 28px;
 `
 const Column=styled.div`
     display: flex;
@@ -82,7 +86,7 @@ const Page=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    //justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     height: calc(100vh - 140px);
     background: #E5E5E5;
