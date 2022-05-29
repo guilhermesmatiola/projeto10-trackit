@@ -5,20 +5,26 @@ import checkmark from "../assets/images/check.png" ;
 
 export default function TodayHabit({habit,loadHabits,token}){
    
-    const [background,setBackground]=useState("#EBEBEB");
+    let background='';
     if(habit.done){
-        setBackground("#8FC549");
+        background="#8FC549";
+    }else{
+        background="#EBEBEB";
     }
-    
-    function doHabit(){
 
+    function doHabit(){
+        let isCheck;
         const config = {
             headers: {
               "Authorization": `Bearer ${token}`
             }
         };
-
-        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`,config);
+        if(habit.done){
+            isCheck="uncheck";
+        }else{
+            isCheck="check";
+        }
+        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/${isCheck}`,null, config);
     
         promise.then(resposta => {  
             console.log(resposta.data);
@@ -28,12 +34,12 @@ export default function TodayHabit({habit,loadHabits,token}){
 
     return(
         <>
-        <Container>
+        <Container background={background}>
             <Row>
                 <Column>
                     <h1>{habit.name}</h1>
-                    <h2>Sequência atual: {habit.currentSequence}</h2><br></br>
-                    <h2>Seu recorde: {habit.highestSequence}</h2>
+                    <h2>Sequência atual:<strong>{habit.currentSequence}</strong></h2><br></br>
+                    <h2>Seu recorde:<strong>{habit.highestSequence}</strong></h2>
                 </Column>
                 <Column>
                     <CheckBox background={background} onClick={doHabit}><img src={checkmark}></img></CheckBox>
@@ -94,5 +100,14 @@ const Container=styled.div`
         font-size: 12.976px;
         line-height: 16px;
         color: #666666;
+    }
+    strong{
+        margin-left: 10px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12.976px;
+        line-height: 16px;
+        color: ${props => props.background};
     }
 `

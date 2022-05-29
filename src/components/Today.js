@@ -9,16 +9,16 @@ import TodayHabit from "./TodayHabit";
 import UserContext from "../context/UserContext";
 
 export default function Today(){
-    dayjs.locale('pt-bt');
+  
     const [habits,setHabits]=useState([]);
     
-    const { user } = useContext(UserContext);
+    const { user , setUser} = useContext(UserContext);
     
     const {image,token} = user;
-    //const now = dayjs();
+ 
     const now = dayjs().locale("pt-br");
-    useEffect(() => {
-       
+
+    function loadHabits(){
         const config = {
             headers: {
               Authorization: `Bearer ${token}`
@@ -28,26 +28,64 @@ export default function Today(){
         const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`,config);
     
         promise.then(resposta => {
+            nDone=0;
+            for(let i=0;i<resposta.data.length;i++){
+                if(resposta.data[i].done){
+                    nDone++;
+                }
+            }
+            setUser(
+                {   
+                    image: user.image,
+                    token: user.token,
+                    percentage: (nDone/resposta.data.length)*100
+                },
+            );
             setHabits(resposta.data);
         });
+        
+    }
+    let nDone=0;
+    let txtcolor="#BABABA";
+    let percent;
+    let txt=countDone();
+    
+    function countDone(){
+        
+        for(let i=0;i<habits.length;i++){
+            if(habits[i].done){
+                nDone++;
+            }
+        }
+        if(nDone===0){
+            return "Nenhum hábito concluído ainda";
+        }else{
+            txtcolor="#8FC549";
+            return `${nDone/habits.length*100}% dos hábitos concluídos`;
+        }
+    }
+
+    useEffect(() => {
+        loadHabits();
         
     }, []);
 
     const day = now.format("dddd");
     const Day = day.charAt(0).toUpperCase() + day.slice(1);
-    
+
     return(
         <>
         <Header/>
         <Page>
             <Container> <h1>{Day}, {now.format("DD/MM/YYYY")} </h1> </Container>
+            <Container> <Text color={txtcolor}>{txt}</Text> </Container>
             <Column>
                 {habits.map((habit) => (
-                    <TodayHabit habit={habit} token={token} key={habit.id}/>
+                    <TodayHabit loadHabits={loadHabits} habit={habit} token={token} key={habit.id}/>
                 ))}
             </Column>
         </Page>
-        <Footer/>
+        <Footer percent={percent}/>
         </>
     )
 }
@@ -61,7 +99,14 @@ const Column=styled.div`
     margin: 20px;
     margin-bottom: 35px;
 `
-
+const Text=styled.div`
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: ${props=>props.color};
+`
 const Page=styled.div`
     box-sizing: border-box;
     display: flex;

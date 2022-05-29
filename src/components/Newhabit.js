@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import {React, useContext, useState } from 'react';
 import UserContext from "../context/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function NewHabit({setAdd,loadHabits}){
 
@@ -68,6 +69,8 @@ export default function NewHabit({setAdd,loadHabits}){
         setDays(newdays);
     }
 
+    const [enable, setEnable] = useState(true);
+
     return(
         <Container>
             <input type="text" id="name" value={habit} placeholder="Nome do hábito" required onChange={(e)=>setHabit(e.target.value)} />
@@ -83,12 +86,39 @@ export default function NewHabit({setAdd,loadHabits}){
             </ContainerDays>
             <Row>
                 <Cancel onClick={() =>{ setAdd(false);navigate("/habitos")}}>Cancelar</Cancel>
-                <button onClick={submitData}>Salvar</button>
+                {enable ? <button onClick={submitData}>Salvar</button> : <button> <ThreeDots width={303} height={15} color={"#FFFFFF"} /></button>}
             </Row>
             
         </Container>
     )
 }
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-right: 36px;
+    margin-left: 36px;
+    button {
+        cursor: pointer;
+        margin:10px;
+        min-width: 100px;
+        height: 45px;
+        margin-right: 36px;
+        margin-left: 36px;
+        text-align: center;
+        background-color: #52B6FF;
+        color: #FFFFFF;
+        font-size: 21px;
+        border: none;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        a{
+            text-decoration: none;
+        }
+    }
+`
 const ContainerDays=styled.div`
     width: 100%;
     display: flex;
@@ -151,6 +181,7 @@ const Cancel=styled.div`
     line-height: 20px;
     text-align: center;
     color: #52B6FF;
+    cursor:pointer;
 `
 const Container=styled.div`
     display: flex;

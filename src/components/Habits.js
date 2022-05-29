@@ -47,7 +47,7 @@ export default function HabitsPage(){
         {add ? (<Newhabit setAdd={setAdd} loadHabits={loadHabits} />):(<></>)}
         {hasHabit ? 
         (
-            <EmptyText> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! </EmptyText>
+            <DummyText> Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! </DummyText>
         ):(
             <Column>
                 {habits.map((habit) => (
@@ -56,12 +56,12 @@ export default function HabitsPage(){
             </Column>
         )}
         </Page>
-        <Footer/>
+        <Footer percent={user.percentage}/>
         </>
     )
 }
 
-const EmptyText=styled.div`
+const DummyText=styled.div`
     width: 88%;
     font-family: 'Lexend Deca';
     font-style: normal;

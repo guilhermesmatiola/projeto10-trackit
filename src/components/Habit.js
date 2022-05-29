@@ -97,6 +97,7 @@ const Row=styled.div`
     img{
         margin: 10px;
         height:15px;
+        cursor: pointer;
     }
     h1{
         margin: 10px;
